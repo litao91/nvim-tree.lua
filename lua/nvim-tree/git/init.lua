@@ -134,6 +134,16 @@ function M.load_project_status(cwd)
   return M.projects[project_root]
 end
 
+function M.purge_state()
+  for _, p in pairs(M.projects) do
+    if p.watcher then
+      p.watcher:stop()
+    end
+  end
+  M.projects = {}
+  M.cwd_to_project_root = {}
+end
+
 function M.setup(opts)
   M.config = opts.git
   M.config.watcher = opts.filesystem_watchers
